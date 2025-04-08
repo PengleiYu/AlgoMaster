@@ -4,35 +4,36 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class TreePrinter {
-    public static void printTree(ITrieNode root) {
+    public static void printTree(IPrintableNode root) {
         System.out.println("Root");
 
-        ITrieNode lastNode = getLastChild(root);
+        IPrintableNode lastNode = getLastChild(root);
         for (int i = 0; i < root.getChildrenSize(); i++) {
-            ITrieNode child = root.getChild(i);
+            IPrintableNode child = root.getChild(i);
             printNode(child, i, "", child == lastNode);
         }
     }
 
-    private static void printNode(@Nullable ITrieNode node, int index, String prefix, boolean isLastChild) {
+    private static void printNode(@Nullable IPrintableNode node, int index, String prefix, boolean isLastChild) {
         if (node == null) return;
 
         String connector = isLastChild ? "└── " : "├── ";
-        System.out.println(prefix + connector + (char) index);
+        String value = node.getValue();
+        System.out.println(prefix + connector + (char) index + (value == null ? "" : ":" + value));
 
 
         String newPrefix = prefix + (isLastChild ? "    " : "│   ");
 
-        ITrieNode lastNode = getLastChild(node);
+        IPrintableNode lastNode = getLastChild(node);
         for (int i = 0; i < node.getChildrenSize(); i++) {
-            ITrieNode child = node.getChild(i);
+            IPrintableNode child = node.getChild(i);
             printNode(child, i, newPrefix, child == lastNode);
         }
     }
 
     @Nullable
-    private static ITrieNode getLastChild(@NotNull ITrieNode node) {
-        ITrieNode lastNode = null;
+    private static IPrintableNode getLastChild(@NotNull IPrintableNode node) {
+        IPrintableNode lastNode = null;
         for (int i = node.getChildrenSize() - 1; i >= 0; i--) {
             if (node.getChild(i) != null) {
                 lastNode = node.getChild(i);

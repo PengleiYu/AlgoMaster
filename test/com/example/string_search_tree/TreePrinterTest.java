@@ -1,5 +1,7 @@
 package com.example.string_search_tree;
 
+import org.jetbrains.annotations.Nullable;
+
 class TreePrinterTest {
 
     @org.junit.jupiter.api.Test
@@ -20,7 +22,7 @@ class TreePrinterTest {
         TreePrinter.printTree(root);
     }
 
-    static class TrieNode implements ITrieNode {
+    static class TrieNode implements IPrintableNode {
         String name;
         TrieNode[] children;
 
@@ -34,12 +36,17 @@ class TreePrinterTest {
         }
 
         @Override
+        public @Nullable String getValue() {
+            return name;
+        }
+
+        @Override
         public int getChildrenSize() {
             return children.length;
         }
 
         @Override
-        public ITrieNode getChild(int index) {
+        public IPrintableNode getChild(int index) {
             return children[index];
         }
     }

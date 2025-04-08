@@ -6,9 +6,15 @@ import org.jetbrains.annotations.Nullable;
 public class TrieST<Value> implements StringST<Value> {
     private static final int R = 256;
 
-    private static class Node implements ITrieNode {
+    private static class Node implements IPrintableNode {
+        @Nullable
         private Object val;
         private final Node[] next = new Node[R];
+
+        @Override
+        public @Nullable String getValue() {
+            return val == null ? null : val.toString();
+        }
 
         @Override
         public int getChildrenSize() {
@@ -16,7 +22,7 @@ public class TrieST<Value> implements StringST<Value> {
         }
 
         @Override
-        public ITrieNode getChild(int index) {
+        public IPrintableNode getChild(int index) {
             return next[index];
         }
     }
