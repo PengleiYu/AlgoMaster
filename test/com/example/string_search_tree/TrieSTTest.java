@@ -4,11 +4,21 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class TrieSTTest {
 
     private TrieST<Integer> trieST;
+
+    private List<String> getSortedResults(Iterable<String> iterable) {
+        return StreamSupport.stream(iterable.spliterator(), false)
+                .sorted()
+                .collect(Collectors.toList());
+    }
 
     @BeforeEach
     public void init() {
@@ -36,5 +46,53 @@ class TrieSTTest {
         assertEquals(4, trieST.get("by"));
         assertEquals(2, trieST.get("sea"));
         assertNull(trieST.get("hello"));
+    }
+
+    @Test
+    void put() {
+    }
+
+    @Test
+    void delete() {
+    }
+
+    @Test
+    void contains() {
+    }
+
+    @Test
+    void isEmpty() {
+    }
+
+    @Test
+    void longestPrefix() {
+    }
+
+    @Test
+    void keysWithPrefix() {
+        assertIterableEquals(Arrays.asList("sea", "sells"), trieST.keysWithPrefix("se"));
+        assertIterableEquals(Arrays.asList("she", "shells"), trieST.keysWithPrefix("she"));
+        assertIterableEquals(List.of(), trieST.keysWithPrefix("shen"));
+    }
+
+    @Test
+    void keysThatMatch() {
+        assertIterableEquals(List.of("she"), trieST.keysThatMatch("she"));
+        assertIterableEquals(List.of("she", "the"), trieST.keysThatMatch(".he"));
+        assertIterableEquals(List.of("she"), trieST.keysThatMatch("s.e"));
+        assertIterableEquals(List.of("sea", "she", "the"), getSortedResults(trieST.keysThatMatch("...")));
+        assertIterableEquals(List.of(), trieST.keysThatMatch("......."));
+        assertIterableEquals(List.of(), trieST.keysThatMatch(""));
+    }
+
+    @Test
+    void size() {
+        assertEquals(6, trieST.size());
+    }
+
+    @Test
+    void keys() {
+        String[] keys = {"by", "sea", "sells", "she", "shells", "the"};
+        assertIterableEquals(Arrays.asList(keys), trieST.keys());
     }
 }

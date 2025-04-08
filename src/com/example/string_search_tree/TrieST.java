@@ -3,6 +3,9 @@ package com.example.string_search_tree;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class TrieST<Value> implements StringST<Value> {
     private static final int R = 256;
 
@@ -84,12 +87,39 @@ public class TrieST<Value> implements StringST<Value> {
 
     @Override
     public Iterable<String> keysWithPrefix(@NotNull String s) {
-        return null;
+        Queue<String> q = new LinkedList<>();
+        collect(get(root, s, 0), s, q);
+        return q;
+    }
+
+    private void collect(@Nullable Node x, String pre, Queue<String> q) {
+        if (x == null) return;
+        if (x.val != null) q.add(pre);
+        for (char c = 0; c < x.next.length; c++) {
+            collect(x.next[c], pre + c, q);
+        }
     }
 
     @Override
     public Iterable<String> keysThatMatch(@NotNull String s) {
-        return null;
+        Queue<String> q = new LinkedList<>();
+        collect(root, "", s, q);
+        return q;
+    }
+
+    private void collect(@Nullable Node x, String pre, String pat, Queue<String> q) {
+        if (x == null) return;
+        int d = pre.length();
+        // 长度相同说明匹配到头了
+        if (d == pat.length() && x.val != null) q.add(pre); // val不为null，说明是完整的key
+        if (d == pat.length()) return;
+
+        char patC = pat.charAt(d);
+
+        for (char c = 0; c < x.next.length; c++) {
+            if (patC == c || patC == '.')
+                collect(x.next[c], pre + c, pat, q);
+        }
     }
 
     @Override
@@ -99,6 +129,6 @@ public class TrieST<Value> implements StringST<Value> {
 
     @Override
     public Iterable<String> keys() {
-        return null;
+        return keysWithPrefix("");
     }
 }
