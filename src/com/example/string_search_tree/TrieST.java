@@ -93,7 +93,7 @@ public class TrieST<Value> implements StringST<Value> {
 
     @Override
     public boolean isEmpty() {
-        return false;
+        return size() == 0;
     }
 
     @Override
@@ -140,7 +140,18 @@ public class TrieST<Value> implements StringST<Value> {
 
     @Override
     public int size() {
-        return 0;
+        return size(root);
+    }
+
+    // size的延迟实现，性能不好
+    private int size(@Nullable Node x) {
+        if (x == null) return 0;
+        int cnt = 0;
+        if (x.val != null) cnt++;
+        for (int i = 0; i < x.next.length; i++) {
+            cnt += size(x.next[i]);
+        }
+        return cnt;
     }
 
     @Override
