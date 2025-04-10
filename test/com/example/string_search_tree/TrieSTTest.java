@@ -54,6 +54,20 @@ class TrieSTTest {
 
     @Test
     void delete() {
+        String[] keys = {"by", "sea", "sells", "she", "shells", "the"};
+        trieST.delete("");
+        assertIterableEquals(
+                getSortedResults(Arrays.asList(keys)),
+                getSortedResults(trieST.keys())
+        );
+        trieST.delete("she");
+        assertIterableEquals(
+                getSortedResults(Arrays.asList("by", "sea", "sells", "shells", "the")),
+                getSortedResults(trieST.keys()));
+        trieST.delete("sea");
+        assertIterableEquals(
+                getSortedResults(Arrays.asList("by", "sells", "shells", "the")),
+                getSortedResults(trieST.keys()));
     }
 
     @Test

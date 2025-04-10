@@ -67,7 +67,23 @@ public class TrieST<Value> implements StringST<Value> {
 
     @Override
     public void delete(@NotNull String key) {
+        delete(root, key, 0);
+    }
 
+    @Nullable
+    private Node delete(@Nullable Node x, @NotNull String key, int d) {
+        if (x == null) return null;
+        if (d == key.length()) x.val = null;// 当前位置正好是key，删除value
+        else {
+            char c = key.charAt(d);
+            x.next[c] = delete(x.next[c], key, d + 1);//找到key的下一个节点进行删除
+        }
+
+        if (x.val != null) return x;// 当前节点存了值，保留节点
+        for (int i = 0; i < x.next.length; i++) {
+            if (x.next[i] != null) return x;// 当前节点存在子节点，保留节点
+        }
+        return null;// 当前节点的值为空，且子节点都是空，则需要删除该节点
     }
 
     @Override
