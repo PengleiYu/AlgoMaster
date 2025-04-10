@@ -1,5 +1,6 @@
 package com.example.string_search_tree;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 class TreePrinterTest {
@@ -7,7 +8,7 @@ class TreePrinterTest {
     @org.junit.jupiter.api.Test
     void printTree() {
 
-        TrieNode root = new TrieNode("Root");
+        TrieNode root = new TrieNode("RootValue");
 
         TrieNode child1 = new TrieNode("Child1");
         TrieNode child2 = new TrieNode("Child2");
@@ -33,6 +34,11 @@ class TreePrinterTest {
 
         public void addChild(TrieNode child, int index) {
             children[index] = child;
+        }
+
+        @Override
+        public @NotNull String getName(int indexInParent) {
+            return indexInParent == -1 ? "root" : String.valueOf((char) indexInParent);
         }
 
         @Override

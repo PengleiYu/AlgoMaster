@@ -15,6 +15,11 @@ public class TrieST<Value> implements StringST<Value> {
         private final Node[] next = new Node[R];
 
         @Override
+        public @NotNull String getName(int indexInParent) {
+            return indexInParent == -1 ? "root" : String.valueOf((char) indexInParent);
+        }
+
+        @Override
         public @Nullable String getValue() {
             return val == null ? null : val.toString();
         }
